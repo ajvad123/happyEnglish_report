@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Follow Up Report</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #2c2c54;
+            color: #dfe4ea;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            scroll-behavior: smooth;
+            margin-bottom: 60px;
+        }
+
+        .container {
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+        }
+
+        header {
+            background-color: #7158e2;
+            color: #ffffff;
+            padding: 15px 0;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        footer {
+            background-color: #7158e2;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .username {
+            font-size: 1.2rem;
+            color: #f8f8f8;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 12px;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h1,
+        h2 {
+            font-weight: 700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        input,
+        select {
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid #fff;
+            color: #fff;
+            border-radius: 8px;
+        }
+
+        input::placeholder {
+            color: #f0f0f0;
+        }
+
+        input:focus,
+        select:focus {
+            background-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 5px #34ace0;
+            outline: none;
+            border-color: #34ace0;
+        }
+
+        .btn-light {
+            background-color: #34ace0;
+            color: white;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-light:hover {
+            background-color: #227093;
+            color: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .table {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        th,
+        td {
+            color: #dfe4ea;
+            padding: 15px;
+        }
+
+        th {
+            background-color: #34ace0;
+            border-bottom: 2px solid #fff;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Media Queries for Responsive Design */
+        @media (max-width: 768px) {
+            .username {
+                position: static;
+                margin-top: 10px;
+                text-align: center;
+            }
+
+            .btn {
+                margin-bottom: 10px;
+            }
+
+            input,
+            select {
+                margin-bottom: 10px;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            table {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .row {
+                display: block;
+            }
+
+            input,
+            select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Follow Up Report</h1>
+        <span class="username" id="username"></span>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-light nav-button">Home</a>
+    </header>
+
+    <div class="container">
+        <h2 class="text-center mb-4">Follow Up Report</h2>
+
+        <div class="row mb-4">
+            <div class="col-lg-4 col-md-6 mb-3">
+                <input type="text" class="form-control" id="searchName" placeholder="Search by Name">
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <input type="text" class="form-control" id="searchMobile" placeholder="Search by Mobile">
+            </div>
+            <div class="col-lg-4 col-md-6 mb-3">
+                <select class="form-control" id="filterTrainer">
+                    <option value="">Filter by Trainer</option>
+                    <option>Name1</option>
+                    <option>Name2</option>
+                    <option>Name3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-4 col-md-6 mb-3">
+                <select class="form-control" id="filterCourse">
+                    <option value="">Filter by Course</option>
+                    <option>Course1</option>
+                    <option>Course2</option>
+                    <option>Course3</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Follow Up</th>
+                        <th>Conversion</th>
+                        <th>Batch No</th>
+                        <th>Trainer</th>
+                        <th>Course</th>
+                    </tr>
+                </thead>
+                <tbody id="reportTable">
+                    <!-- Follow Up data will be populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Follow Up Management System. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+
+        if (username) {
+            document.getElementById('username').innerText = `Logged In: ${username}`;
+        } else {
+            document.getElementById('username').innerText = `Logged In: Guest`;
+        }
+
+        $(document).ready(function () {
+            // Fetch and display data
+            fetch('/get_followups')
+                .then(response => response.json())
+                .then(data => {
+                    let tableBody = '';
+                    data.forEach(followup => {
+                        tableBody += `<tr>
+                            <td>${followup.name}</td>
+                            <td>${followup.mobile}</td>
+                            <td>${followup.follow_up}</td>
+                            <td>${followup.conversion}</td>
+                            <td>${followup.batch_no}</td>
+                            <td>${followup.trainer}</td>
+                            <td>${followup.course}</td>
+                        </tr>`;
+                    });
+                    $('#reportTable').html(tableBody);
+                });
+
+            // Filter functionality
+            $('#searchName').on('keyup', function () {
+                filterTable();
+            });
+
+            $('#searchMobile').on('keyup', function () {
+                filterTable();
+            });
+
+            $('#filterTrainer').on('change', function () {
+                filterTable();
+            });
+
+            $('#filterCourse').on('change', function () {
+                filterTable();
+            });
+
+            function filterTable() {
+                const searchName = $('#searchName').val().toLowerCase();
+                const searchMobile = $('#searchMobile').val();
+                const filterTrainer = $('#filterTrainer').val();
+                const filterCourse = $('#filterCourse').val();
+
+                $('tbody tr').each(function () {
+                    const name = $(this).find('td:nth-child(1)').text().toLowerCase();
+                    const mobile = $(this).find('td:nth-child(2)').text();
+                    const trainer = $(this).find('td:nth-child(6)').text();
+                    const course = $(this).find('td:nth-child(7)').text();
+
+                    if (name.includes(searchName) && mobile.includes(searchMobile) &&
+                        (filterTrainer === '' || trainer === filterTrainer) &&
+                        (filterCourse === '' || course === filterCourse)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
